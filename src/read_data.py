@@ -28,7 +28,7 @@ FLICKR_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'da
 
 def read_flickr_file(filename):
     data = defaultdict(list)
-    with open(filename, 'r') as f:
+    with open(filename, 'r',encoding="utf-8") as f:
         for line in f.readlines():
             toks = line.strip().split()
             imageID,refID = toks[0].split('#')
@@ -58,7 +58,7 @@ MSR_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data'
 def read_msr_file(pfile):
     # Parse file
     descriptions = defaultdict(lambda:[])
-    with open(pfile, 'r') as f:
+    with open(pfile, 'r',encoding="utf-8") as f:
         lines = f.readlines()
         for line in lines[1:]:
             tokens = line.strip().split(',')
@@ -72,8 +72,8 @@ def read_msr_file(pfile):
             if language.lower() == 'english':
                 descriptions[video_id].append( description )
             elif language.lower == 'eng':
-                print 'lower!!'
-                print tokens
+                print('lower!!')
+                print(tokens)
                 exit()
     return descriptions
 
@@ -98,7 +98,7 @@ SICK_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data
 
 def read_sick_file(filename):
     data = []
-    with open(filename, 'r') as f:
+    with open(filename, 'r',encoding="utf-8") as f:
         lines = f.readlines()
         labels = lines[0].strip().split('\t')
         for line in lines[1:]:

@@ -14,8 +14,20 @@
 import os
 import sys
 
-import commands
+
 import re
+from subprocess import check_output, CalledProcessError, STDOUT
+
+def getstatusoutput(cmd):
+    try:
+        data = check_output(cmd, shell=True, universal_newlines=True, stderr=STDOUT)
+        status = 0
+    except CalledProcessError as ex:
+        data = ex.output
+        status = ex.returncode
+    if data[-1:] == '\n':
+        data = data[:-1]
+    return status, data
 
 METRICS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'metrics')
 
@@ -24,6 +36,7 @@ METRICS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'me
 #
 # Add modules to path to make importing easy here:
 sys.path.append(os.path.join(METRICS_DIR, 'coco-caption'))
+
 
 from pycocotools.coco import COCO
 from pycocoevalcap.eval import COCOEvalCap
@@ -36,19 +49,19 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f):
     Runs the coco evaluation for each ref list and prints to the output file.
   """
 
-  print >>f, "Corruption:", corruption
-  print >>f, "#  References:     5   |    10   |    20"
-  print >>f, "-----------------------+---------+---------"
+  print(f, "Corruption:", corruption,file=sys.stderr)
+  print(f, "#  References:     5   |    10   |    20",file=sys.stderr)
+  print(f, "-----------------------+---------+---------",file=sys.stderr)
   coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p),
                  coco_accuracy(sent_a, sent_b, ref_10, corruption in m_p),
                  coco_accuracy(sent_a, sent_b, ref_20, corruption in m_p)]
   for metric in coco_results[0].keys():
-    print >>f, "   %10s: %0.1f | %0.1f | %0.1f" % (metric, 
+    print(f, "   %10s: %0.1f | %0.1f | %0.1f" % (metric, 
                                                coco_results[0][metric] * 100, 
                                                coco_results[1][metric] * 100, 
-                                               coco_results[2][metric] * 100)
-  print >>f, "-----------------------+---------+---------"
-  print >>f, ""
+                                               coco_results[2][metric] * 100),file=sys.stderr)
+  print(f, "-----------------------+---------+---------",file=sys.stderr)
+  print(f, "",file=sys.stderr)
 
 def coco_accuracy(sent_a, sent_b, refs, near):
   """
@@ -116,15 +129,15 @@ def badger(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f):
     Runs the badger evaluation for each ref list and prints to the output file.
   """
 
-  print >>f, "Corruption:", corruption
-  print >>f, "#  References:     5   |    10   |    20"
-  print >>f, "-----------------------+---------+---------"
-  print >>f, "   %10s: %0.1f | %0.1f | %0.1f" % ('badger',
+  print(f, "Corruption:", corruption,file=sys.stderr)
+  print(f, "#  References:     5   |    10   |    20",file=sys.stderr)
+  print(f, "-----------------------+---------+---------",file=sys.stderr)
+  print(f, "   %10s: %0.1f | %0.1f | %0.1f" % ('badger',
                                                  badger_accuracy(sent_a, sent_b, ref_5, corruption in m_p) * 100, 
                                                  badger_accuracy(sent_a, sent_b, ref_10, corruption in m_p) * 100, 
-                                                 badger_accuracy(sent_a, sent_b, ref_20, corruption in m_p) * 100) 
-  print >>f, "-----------------------+---------+---------"
-  print >>f, ""
+                                                 badger_accuracy(sent_a, sent_b, ref_20, corruption in m_p) * 100),file=sys.stderr)
+  print(f, "-----------------------+---------+---------",file=sys.stderr)
+  print(f, "",file=sys.stderr)
 
 def badger_accuracy(sent_a, sent_b, refs, near):
   """
@@ -153,7 +166,7 @@ def badger_eval(cand_file, ref_file):
   out_dir = os.path.join(METRICS_DIR, 'badger', 'willie', 'out')
   exec_file = os.path.join(METRICS_DIR, 'badger', 'badger.jar')
   cmd = 'java -jar %s -r %s -t %s -o %s' % (exec_file, ref_file,cand_file,out_dir)
-  status,output = commands.getstatusoutput(cmd)
+  status,output = getstatusoutput(cmd)
   
   # assert badger worked correctly
   check = 'Scoring \w+ doc example_set::doc1 seg (\d+) (\d+) references found'
@@ -183,15 +196,15 @@ def nist(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f):
     Runs the badger evaluation for each ref list and prints to the output file.
   """
 
-  print >>f, "Corruption:", corruption
-  print >>f, "#  References:     5   |    10   |    20"
-  print >>f, "-----------------------+---------+---------"
-  print >>f, "   %10s: %0.5f | %0.5f | %0.5f" % ('nist',
+  print(f, "Corruption:", corruption,file=sys.stderr)
+  print(f, "#  References:     5   |    10   |    20",file=sys.stderr)
+  print(f, "-----------------------+---------+---------",file=sys.stderr)
+  print(f, "   %10s: %0.5f | %0.5f | %0.5f" % ('nist',
                                                  badger_accuracy(sent_a, sent_b, ref_5), 
                                                  badger_accuracy(sent_a, sent_b, ref_10), 
-                                                 badger_accuracy(sent_a, sent_b, ref_20)) 
-  print >>f, "-----------------------+---------+---------"
-  print >>f, ""
+                                                 badger_accuracy(sent_a, sent_b, ref_20)),file=sys.stderr)
+  print(f, "-----------------------+---------+---------",file=sys.stderr)
+  print(f, "",file=sys.stderr)
 
 def nist_accuracy(sent_a, sent_b, refs):
   """
@@ -215,7 +228,7 @@ def nist_eval(cand_file, ref_file):
   exec_file = os.path.join(METRICS_DIR, 'nist', 'mteval-v13a.pl')
   # invoke nist
   cmd = 'perl mteval-v13a.pl -r %s -s %s -t %s' % (exec_file, ref_file,src_file,tst_file)
-  status,output = commands.getstatusoutput(cmd)
+  status,output = getstatusoutput(cmd)
 
   # parse results
   sections = output.split('# ' + '-'*72)
@@ -238,15 +251,15 @@ def terp(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f):
     Runs the terp evaluation for each ref list and prints to the output file.
   """
 
-  print >>f, "Corruption:", corruption
-  print >>f, "#  References:     5   |    10   |    20"
-  print >>f, "-----------------------+---------+---------"
-  print >>f, "   %10s: %0.1f | %0.1f | %0.1f" % ('terp',
+  print(f, "Corruption:", corruption,file=sys.stderr)
+  print(f, "#  References:     5   |    10   |    20",file=sys.stderr)
+  print(f, "-----------------------+---------+---------",file=sys.stderr)
+  print(f, "   %10s: %0.1f | %0.1f | %0.1f" % ('terp',
                                                  terp_accuracy(sent_a, sent_b, ref_5,  corruption in m_p) * 100, 
                                                  terp_accuracy(sent_a, sent_b, ref_10, corruption in m_p) * 100, 
-                                                 terp_accuracy(sent_a, sent_b, ref_20, corruption in m_p) * 100) 
-  print >>f, "-----------------------+---------+---------"
-  print >>f, ""
+                                                 terp_accuracy(sent_a, sent_b, ref_20, corruption in m_p) * 100),file=sys.stderr)
+  print(f, "-----------------------+---------+---------",file=sys.stderr)
+  print(f, "",file=sys.stderr)
 
 def terp_accuracy(sent_a, sent_b, refs, near):
   """
@@ -278,17 +291,17 @@ def terp_eval(cand_file, ref_file):
   res_file   = cand_file
   phrase_db = os.path.join(METRICS_DIR, 'terp', 'data', 'phrases.db')
   with open(param_file, 'w') as f:
-      print >>f, 'Phrase Database (filename)               : ' + phrase_db
-      print >>f, 'Reference File (filename)                : ' + ref_file
-      print >>f, 'Hypothesis File (filename)               : ' + cand_file
-      print >>f, 'Output Formats (list)                    : param nist pra'
-      print >>f, 'Output Prefix (filename)                 : ' + res_file
+      print(f, 'Phrase Database (filename)               : ' + phrase_db,file=sys.stderr)
+      print(f, 'Reference File (filename)                : ' + ref_file,file=sys.stderr)
+      print(f, 'Hypothesis File (filename)               : ' + cand_file,file=sys.stderr)
+      print(f, 'Output Formats (list)                    : param nist pra',file=sys.stderr)
+      print(f, 'Output Prefix (filename)                 : ' + res_file,file=sys.stderr)
 
   terpa = os.path.join(METRICS_DIR, 'terp', 'bin', 'terpa')
 
   # invoke terp
   cmd = '%s %s' % (terpa,param_file)
-  status,output = commands.getstatusoutput(cmd)
+  status,output = getstatusoutput(cmd)
 
   # parse results
   scores = list()

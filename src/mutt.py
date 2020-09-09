@@ -34,27 +34,27 @@ def main():
      score is based on whether sentence A received a higher score than B.
   """
 
-  print "Gathering corruptions..."
+  #print "Gathering corruptions..."
   corruptions = gather_corruptions()
 
   if not g_c.check_generated():
     g_files = g_c.init_generate_corruptions()
     gen = True
   else:
-    print "Generated corruption files already created. clear tmp to redo reference gathering."
+    #print "Generated corruption files already created. clear tmp to redo reference gathering."
     gen = False
   for corruption, entries in corruptions.items():
     # If these files already exist, skip the corruption gathering and go to metrics testing.
     if writer.check_json(corruption) and writer.check_xml(corruption):
-       print "Files for", corruption, "found. Clear tmp to redo reference gathering." 
+       #print "Files for", corruption, "found. Clear tmp to redo reference gathering." 
        continue
 
     # Open files
     json_files = writer.init_json(corruption)
     xml_files  = writer.init_xml(corruption)
 
-    print corruption, len(entries)
-    print "Gathering references for each entry in", corruption, "..."
+    #print corruption, len(entries)
+    #print "Gathering references for each entry in", corruption, "..."
 
     count = 0
     for entry in entries: 
@@ -73,7 +73,7 @@ def main():
     # Close files
     writer.close_json(json_files)
     writer.close_xml(xml_files)
-    print "Corruption: %s, Count: %d" % (corruption, count)
+    #print "Corruption: %s, Count: %d" % (corruption, count)
 
   if gen:
     g_c.close_generated_files(g_files)
@@ -82,7 +82,7 @@ def main():
   coco_file = open(os.path.join(RES_DIR, 'coco.txt'), 'w')
   badger_file = open(os.path.join(RES_DIR, 'badger.txt'), 'w')
   terp_file = open(os.path.join(RES_DIR, 'terp.txt'), 'w')
-  for corruption in (corruptions.keys() + g_c.corruptions.keys()):
+  for corruption in (list(corruptions.keys()) + list(g_c.corruptions.keys())):
     metrics.coco(*writer.files_json(corruption), corruption=corruption, f=coco_file)
     metrics.badger(*writer.files_xml(corruption), corruption=corruption, f=badger_file)
     metrics.terp(*writer.files_xml(corruption), corruption=corruption, f=terp_file)

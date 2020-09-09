@@ -143,18 +143,18 @@ def main():
     cluster = get_cluster(a_orig, b_orig, a_data)
 
     if cluster:
-      print a_data
-      print cluster
-      print a_orig
-      print b_orig
-      print
+      print(a_data)
+      print(cluster)
+      print(a_orig)
+      print(b_orig)
+      print()
 
     cluster, refs = gather_references(a_orig, a_data)
 
-    print '\tcluster: ', cluster
+    print('\tcluster: ', cluster)
     for ref in refs:
-      print '\t\t', ref
-    print '\n\n\n'
+      print('\t\t', ref)
+    print('\n\n\n')
 
 
 if __name__ == '__main__':

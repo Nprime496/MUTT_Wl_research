@@ -17,7 +17,6 @@ import re
 import random
 
 from collections import defaultdict
-from pattern.en import parse
 from read_data import sick
 from tools import edit_distance
 
@@ -266,14 +265,14 @@ def apply_corruption(entries, corruption, f_corr, description):
     stddev = variance ** 0.5
 
     with open(outname, 'w') as f:
-        print >>f, corruption
-        print >>f, description
-        print >>f, ''
+        #print >>f, corruption
+        #print >>f, description
+        #print >>f, ''
 
-        print >>f, 'num:    ', len(corrupted)
-        print >>f, 'mean:   ', mean
-        print >>f, 'stddev: ', stddev
-        print >>f, '\n'
+        #print >>f, 'num:    ', len(corrupted)
+        #print >>f, 'mean:   ', mean
+        #print >>f, 'stddev: ', stddev
+        #print >>f, '\n'
 
         ranked = sorted(corrupted, key=lambda e:e[-1])
         
@@ -283,11 +282,11 @@ def apply_corruption(entries, corruption, f_corr, description):
             sent    = entry[2]
             corr    = entry[3]
             score   = entry[4]
-            print >>f, '\tdataset:    ', dataset
-            print >>f, '\torig:       ', orig
-            print >>f, '\tsent:       ', sent
-            print >>f, '\tcorr:       ', corr
-            print >>f, '\tscore:      ', score
+            #print >>f, '\tdataset:    ', dataset
+            #print >>f, '\torig:       ', orig
+            #print >>f, '\tsent:       ', sent
+            #print >>f, '\tcorr:       ', corr
+            #print >>f, '\tscore:      ', score
     return ranked
 
 if __name__ == '__main__':

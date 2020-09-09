@@ -14,7 +14,6 @@
 
 import read_data
 
-from pattern.en import parse
 from nltk.tokenize import word_tokenize
 import random
 import re
@@ -28,12 +27,12 @@ import writer
 def clean_text(sent):
     try:
         safe = sent.encode('ascii', 'ignore')
-    except UnicodeDecodeError, e:
+    except UnicodeDecodeError as e:
         safe_list = []
         for c in sent:
             try:
                 safe_list.append( c.encode('ascii', 'ignore') )
-            except UnicodeDecodeError, e:
+            except UnicodeDecodeError as e:
                 pass
         safe = ''.join(safe_list)
     return safe
@@ -163,8 +162,8 @@ def corrupt_swap_chunks(sent):
             chunks.append([word[0]])
 
         else:
-            print '\n\t', sent,
-            print '\n\tERROR: unknown chunktag   ', word
+            print('\n\t', sent)
+            print('\n\tERROR: unknown chunktag   ', word)
             exit()
 
     # if last tag was 'I', then flush it from buffer
@@ -375,8 +374,8 @@ def main():
         sentences = read_data.flickr.values()[0]
         s = sentences[0]
         s = 'a child on a scooter moving down the sidewalk .'
-        print s
-        print f_corr(s)
+        print(s)
+        print(f_corr(s))
 
     else:
         sentences = []
@@ -394,9 +393,9 @@ def main():
                 #    print c
                 #    print
                 #    exit()
-                print s
-                print c
-                print
+                print(s)
+                print(c)
+                print()
                 #assert len(s) == len(c)
 
 
