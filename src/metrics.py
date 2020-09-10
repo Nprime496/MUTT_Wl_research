@@ -72,24 +72,25 @@ def coco_accuracy(sent_a, sent_b, refs, near):
   total = 0.0
   for a, b in zip(coco_eval(sent_a, refs), coco_eval(sent_b, refs)):
     for metric in a.keys():
-      print(" {}[{}]={} ".format(a,metric,a[metric]))
-      print(" {}[{}]={} ".format(b,metric,b[metric]))
-      # Special case of meaning preserving corruptions
-      if near:
-        # Adding .1 to everything to avoid divide by zero error
-        per_diff = abs((a[metric] - b[metric]) / float(a[metric] + 1e-9)) * 100
-        # 15 % threshold
-        if per_diff <= 15:
+      if metric is not "SPICE":
+        #print(" {}[{}]={} ".format(a,metric,a[metric]))
+        #print(" {}[{}]={} ".format(b,metric,b[metric]))
+        # Special case of meaning preserving corruptions
+        if near:
+          # Adding .1 to everything to avoid divide by zero error
+          per_diff = abs((a[metric] - b[metric]) / float(a[metric] + 1e-9)) * 100
+          # 15 % threshold
+          if per_diff <= 15:
+            try:
+              res[metric] += 1
+            except:
+              res[metric]  = 1
+        elif a[metric] > b[metric]:
           try:
             res[metric] += 1
           except:
             res[metric]  = 1
-      elif a[metric] > b[metric]:
-        try:
-          res[metric] += 1
-        except:
-          res[metric]  = 1
-    total += 1
+      total += 1
 
   for metric in res.keys():
     res[metric] /= total
