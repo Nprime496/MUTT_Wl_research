@@ -72,8 +72,8 @@ def coco_accuracy(sent_a, sent_b, refs, near):
   total = 0.0
   for a, b in zip(coco_eval(sent_a, refs), coco_eval(sent_b, refs)):
     for metric in a.keys():
-      print(" a[metric] {} ".format(a[metric]))
-      print(" b[metric] {} ".format(b[metric]))
+      print(" {}[{}]={} ".format(a,metric,a[metric]))
+      print(" {}[{}]={} ".format(b,metric,b[metric]))
       # Special case of meaning preserving corruptions
       if near:
         # Adding .1 to everything to avoid divide by zero error
