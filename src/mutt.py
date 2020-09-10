@@ -46,15 +46,15 @@ def main():
   for corruption, entries in corruptions.items():
     # If these files already exist, skip the corruption gathering and go to metrics testing.
     if writer.check_json(corruption) and writer.check_xml(corruption):
-       #print "Files for", corruption, "found. Clear tmp to redo reference gathering." 
+       print("Files for", corruption, "found. Clear tmp to redo reference gathering.")
        continue
 
     # Open files
     json_files = writer.init_json(corruption)
     xml_files  = writer.init_xml(corruption)
 
-    #print corruption, len(entries)
-    #print "Gathering references for each entry in", corruption, "..."
+    print(corruption, len(entries))
+    print("Gathering references for each entry in", corruption, "...")
 
     count = 0
     for entry in entries: 
@@ -73,7 +73,7 @@ def main():
     # Close files
     writer.close_json(json_files)
     writer.close_xml(xml_files)
-    #print "Corruption: %s, Count: %d" % (corruption, count)
+    print("Corruption: %s, Count: %d" % (corruption, count))
 
   if gen:
     g_c.close_generated_files(g_files)

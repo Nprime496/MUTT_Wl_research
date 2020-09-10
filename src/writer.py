@@ -23,12 +23,12 @@ def clean_text(sent):
 
     try:
         s = sent.decode('ascii', 'ignore')
-    except UnicodeDecodeError, e:
+    except UnicodeDecodeError as e:
         s_list = []
         for c in sent:
             try:
                 s_list.append( c.decode('ascii', 'ignore') )
-            except UnicodeDecodeError, e:
+            except UnicodeDecodeError as e:
                 continue
         s = ''.join(s_list)
     return s
