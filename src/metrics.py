@@ -72,8 +72,8 @@ def coco_accuracy(sent_a, sent_b, refs, near):
   total = 0.0
   for a, b in zip(coco_eval(sent_a, refs), coco_eval(sent_b, refs)):
     for metric in a.keys():
-      print(" a[metric] "+a[metric])
-      print(" b[metric] "+b[metric])
+      print(" a[metric] {} ".format(a[metric]))
+      print(" b[metric] {} ".format(b[metric]))
       # Special case of meaning preserving corruptions
       if near:
         # Adding .1 to everything to avoid divide by zero error
@@ -131,6 +131,7 @@ def badger(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f):
     Runs the badger evaluation for each ref list and prints to the output file.
   """
 
+  print()
   print(f, "Corruption:", corruption,file=sys.stderr)
   print(f, "#  References:     5   |    10   |    20",file=sys.stderr)
   print(f, "-----------------------+---------+---------",file=sys.stderr)
@@ -198,6 +199,7 @@ def nist(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f):
     Runs the badger evaluation for each ref list and prints to the output file.
   """
 
+  print()
   print(f, "Corruption:", corruption,file=sys.stderr)
   print(f, "#  References:     5   |    10   |    20",file=sys.stderr)
   print(f, "-----------------------+---------+---------",file=sys.stderr)
