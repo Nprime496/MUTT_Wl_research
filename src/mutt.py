@@ -84,10 +84,10 @@ def main():
   terp_file = open(os.path.join(RES_DIR, 'terp.txt'), 'w')
   for corruption in (list(corruptions.keys()) + list(g_c.corruptions.keys())):
     metrics.coco(*writer.files_json(corruption), corruption=corruption, f=coco_file)
-    metrics.badger(*writer.files_xml(corruption), corruption=corruption, f=badger_file)
-    metrics.terp(*writer.files_xml(corruption), corruption=corruption, f=terp_file)
-  terp_file.close()
-  badger_file.close()
+    #metrics.badger(*writer.files_xml(corruption), corruption=corruption, f=badger_file)
+    #metrics.terp(*writer.files_xml(corruption), corruption=corruption, f=terp_file)
+  #terp_file.close()
+  #badger_file.close()
   coco_file.close()
 
 
