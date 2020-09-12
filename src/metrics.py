@@ -123,7 +123,7 @@ def coco_eval(candidates_file, references_file):
     # Change back to standard output
     sys.stdout.close()
     sys.stdout = old_stdout
-  
+  print("COCOL EVAL RESULT ",cocoEval.evalImgs,file=sys.stderr)
   return cocoEval.evalImgs
 
 #
