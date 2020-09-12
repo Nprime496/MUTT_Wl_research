@@ -129,7 +129,7 @@ def coco_eval(candidates_file, references_file):
     for corr in corruptions:
       l=[]
       result={}
-      while(annotations[i]['image_id']==corr['image_id']):
+      while(i<len(annotations) and annotations[i]['image_id']==corr['image_id']):
         l.append(float(scorer.score([annotations[i]['caption']], [corr['caption']])[2]))
         i+=1
       result['image_id']=corr['image_id']
