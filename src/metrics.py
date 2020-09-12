@@ -13,7 +13,9 @@
 
 import os
 import sys
-
+import numpy as np
+from bert_score import BERTScorer 
+scorer = BERTScorer(lang="en", rescale_with_baseline=True)
 
 import re
 from subprocess import check_output, CalledProcessError, STDOUT
@@ -113,18 +115,34 @@ def coco_eval(candidates_file, references_file):
     # Derived from example code in coco-captions repo
     print("REFERENCE_FILES_NPRIME",references_file,file=sys.stderr)
     print("CANDIDATE_FILES_NPRIME",candidates_file,file=sys.stderr)
-    coco    = COCO( references_file )
-    cocoRes = coco.loadRes( candidates_file )
-  
-    cocoEval = COCOEvalCap(coco, cocoRes)
-
-    cocoEval.evaluate()
+    #coco    = COCO( references_file )
+    #cocoRes = coco.loadRes( candidates_file )
+    result={}
+    with open(references_file, "r") as f:
+      annotations=f["annotations"]
+    with open(candidates_file, "r") as corr:
+      corruptions=corr
+    i=0
+    output=[]
+    for corr in corruptions:
+      l=[]
+      result={}
+      while(annotations[i]['image_id']==corr['image_id']):
+        l.append(float(scorer.score([annotations[i]['caption']], [corr['caption']])[2]))
+        i+=1
+      result['image_id']=corr['image_id']
+      result['BERTScore']=np.mean(l)
+      output.append(result)
+        
+    #cocoEval = COCOEvalCap(coco, cocoRes)
+    #cocoEval.evaluate()
   finally:
     # Change back to standard output
     sys.stdout.close()
     sys.stdout = old_stdout
-  print("COCOL EVAL RESULT ",cocoEval.evalImgs,file=sys.stderr)
-  return cocoEval.evalImgs
+  #print("COCOL EVAL RESULT ",cocoEval.evalImgs,file=sys.stderr)
+  print("BERTScore RESULT ",output)
+  return output#cocoEval.evalImgs
 
 #
 # badger
