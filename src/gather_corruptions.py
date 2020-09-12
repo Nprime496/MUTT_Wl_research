@@ -283,11 +283,11 @@ def apply_corruption(entries, corruption, f_corr, description):
             sent    = entry[2]
             corr    = entry[3]
             score   = entry[4]
-            print(f, '\tdataset:    ', dataset,file=sys.stderr)
-            print(f, '\torig:       ', orig,file=sys.stderr)
-            print(f, '\tsent:       ', sent,file=sys.stderr)
-            print(f, '\tcorr:       ', corr,file=sys.stderr)
-            print(f, '\tscore:      ', score,file=sys.stderr)
+            #print(f, '\tdataset:    ', dataset,file=sys.stderr)
+            #print(f, '\torig:       ', orig,file=sys.stderr)
+            #print(f, '\tsent:       ', sent,file=sys.stderr)
+            #print(f, '\tcorr:       ', corr,file=sys.stderr)
+            #print(f, '\tscore:      ', score,file=sys.stderr)
     return ranked
 
 if __name__ == '__main__':
