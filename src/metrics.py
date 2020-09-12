@@ -14,8 +14,7 @@ import json
 import os
 import sys
 import numpy as np
-from bert_score import BERTScorer 
-scorer = BERTScorer(lang="en", rescale_with_baseline=True)
+
 
 import re
 from subprocess import check_output, CalledProcessError, STDOUT
