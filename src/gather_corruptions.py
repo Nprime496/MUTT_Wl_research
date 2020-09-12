@@ -269,7 +269,7 @@ def apply_corruption(entries, corruption, f_corr, description):
         print(f, description,file=sys.stderr)
         print(f, '',file=sys.stderr)
 
-        print(f, 'num:    ', len(corrupted),,file=sys.stderr)
+        print(f, 'num:    ', len(corrupted),file=sys.stderr)
         print(f, 'mean:   ', mean,file=sys.stderr)
         print(f, 'stddev: ', stddev,file=sys.stderr)
         print(f, '\n',file=sys.stderr)
