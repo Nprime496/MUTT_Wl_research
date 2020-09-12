@@ -15,6 +15,7 @@
 
 from nltk.tokenize import word_tokenize
 from collections import defaultdict
+import sys
 
 from read_data  import sick, msr, msr_reverse, flickr, flickr_reverse
 from tools import edit_distance
