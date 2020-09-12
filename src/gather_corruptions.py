@@ -265,14 +265,14 @@ def apply_corruption(entries, corruption, f_corr, description):
     stddev = variance ** 0.5
 
     with open(outname, 'w') as f:
-        #print >>f, corruption
-        #print >>f, description
-        #print >>f, ''
+        print(f, corruption,file=sys.stderr)
+        print(f, description,file=sys.stderr)
+        print(f, '',file=sys.stderr)
 
-        #print >>f, 'num:    ', len(corrupted)
-        #print >>f, 'mean:   ', mean
-        #print >>f, 'stddev: ', stddev
-        #print >>f, '\n'
+        print(f, 'num:    ', len(corrupted),,file=sys.stderr)
+        print(f, 'mean:   ', mean,file=sys.stderr)
+        print(f, 'stddev: ', stddev,file=sys.stderr)
+        print(f, '\n',file=sys.stderr)
 
         ranked = sorted(corrupted, key=lambda e:e[-1])
         
@@ -282,11 +282,11 @@ def apply_corruption(entries, corruption, f_corr, description):
             sent    = entry[2]
             corr    = entry[3]
             score   = entry[4]
-            #print >>f, '\tdataset:    ', dataset
-            #print >>f, '\torig:       ', orig
-            #print >>f, '\tsent:       ', sent
-            #print >>f, '\tcorr:       ', corr
-            #print >>f, '\tscore:      ', score
+            print(f, '\tdataset:    ', dataset,file=sys.stderr)
+            print(f, '\torig:       ', orig,file=sys.stderr)
+            print(f, '\tsent:       ', sent,file=sys.stderr)
+            print(f, '\tcorr:       ', corr,file=sys.stderr)
+            print(f, '\tscore:      ', score,file=sys.stderr)
     return ranked
 
 if __name__ == '__main__':

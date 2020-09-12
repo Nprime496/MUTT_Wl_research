@@ -125,8 +125,8 @@ def main():
   orig_to_cluster = {}
 
   for entry in sick:
-    #print entry
-    #print '\n\n\n'
+    print(entry)
+    print('\n\n\n')
 
     a = entry['sentence_A']
     a_orig = entry['sentence_A_original']
