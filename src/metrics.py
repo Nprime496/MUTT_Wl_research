@@ -50,6 +50,7 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics):
     Runs the coco evaluation for each ref list and prints to the output file.
   """
 
+  print()
   print(f, "Corruption:", corruption, metric ,file=sys.stderr)
   print(f, "#  References:     5   |    10   |    20",file=sys.stderr)
   print(f, "-----------------------+---------+---------",file=sys.stderr)
@@ -112,8 +113,8 @@ def coco_eval(candidates_file, references_file,metrics):
   sys.stdout = open(os.devnull, "w")
   try:
     # Derived from example code in coco-captions repo
-    print("REFERENCE_FILES_NPRIME",references_file,file=sys.stderr)
-    print("CANDIDATE_FILES_NPRIME",candidates_file,file=sys.stderr)
+    #print("REFERENCE_FILES_NPRIME",references_file,file=sys.stderr)
+    #print("CANDIDATE_FILES_NPRIME",candidates_file,file=sys.stderr)
     #coco    = COCO( references_file )
     #cocoRes = coco.loadRes( candidates_file )
     result={}
@@ -143,7 +144,7 @@ def coco_eval(candidates_file, references_file,metrics):
     sys.stdout.close()
     sys.stdout = old_stdout
   #print("COCOL EVAL RESULT ",cocoEval.evalImgs,file=sys.stderr)
-  print("BERTScore RESULT ",output)
+  #print("BERTScore RESULT ",output)
   return output#cocoEval.evalImgs
 
 #

@@ -12,7 +12,7 @@
 """
 
 import os
-
+import sys
 from gather_corruptions import gather_corruptions
 from gather_references import gather_references
 
@@ -46,7 +46,7 @@ def evaluate_mutt(metrics):
   for corruption, entries in corruptions.items():
     # If these files already exist, skip the corruption gathering and go to metrics testing.
     if writer.check_json(corruption) and writer.check_xml(corruption):
-       print("Files for", corruption, "found. Clear tmp to redo reference gathering.")
+       print("Files for", corruption, "found. Clear tmp to redo reference gathering.",file=sys.stderr)
        continue
 
     # Open files
