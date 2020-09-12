@@ -111,8 +111,8 @@ def coco_eval(candidates_file, references_file):
   sys.stdout = open(os.devnull, "w")
   try:
     # Derived from example code in coco-captions repo
-    print("reference_file",references_file)
-    print("candidates_file",candidates_file)
+    print("REFERENCE_FILES_NPRIME",references_file,file=sys.stderr)
+    print("CANDIDATE_FILES_NPRIME",candidates_file,file=sys.stderr)
     coco    = COCO( references_file )
     cocoRes = coco.loadRes( candidates_file )
   
