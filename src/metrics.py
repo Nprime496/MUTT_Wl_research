@@ -10,7 +10,7 @@
  Purpose : Script containing wrappers to use various MT metrics suites.
 
 """
-
+import json
 import os
 import sys
 import numpy as np
@@ -119,8 +119,10 @@ def coco_eval(candidates_file, references_file):
     #cocoRes = coco.loadRes( candidates_file )
     result={}
     with open(references_file, "r") as f:
+      f=json.load(f)
       annotations=f["annotations"]
     with open(candidates_file, "r") as corr:
+      corr=json.load(corr)
       corruptions=corr
     i=0
     output=[]
