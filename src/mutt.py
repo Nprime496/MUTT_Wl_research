@@ -24,7 +24,7 @@ import generate_corruptions as g_c
 TMP_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tmp')
 RES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'results')
 
-def main():
+def evaluate_mutt(metric):
   """
    Gathers the corruptions, then for each corruption type:
      -Create reference files containing 5, 10, 20 references per sentence
@@ -83,7 +83,7 @@ def main():
   badger_file = open(os.path.join(RES_DIR, 'badger.txt'), 'w')
   terp_file = open(os.path.join(RES_DIR, 'terp.txt'), 'w')
   for corruption in (list(corruptions.keys()) + list(g_c.corruptions.keys())):
-    metrics.coco(*writer.files_json(corruption), corruption=corruption, f=coco_file)
+    metrics.coco(*writer.files_json(corruption), corruption=corruption, f=coco_file,metric=metric)
     #metrics.badger(*writer.files_xml(corruption), corruption=corruption, f=badger_file)
     #metrics.terp(*writer.files_xml(corruption), corruption=corruption, f=terp_file)
   #terp_file.close()
@@ -91,5 +91,5 @@ def main():
   coco_file.close()
 
 
-if __name__ == '__main__':
-  main()
+#if __name__ == '__main__':
+#  main()

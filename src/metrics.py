@@ -46,7 +46,7 @@ from pycocoevalcap.eval import COCOEvalCap
 # The set of meaning preserving corruptions
 m_p = set(['det_sub', 'near_syms', 'passive'])
 
-def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f):
+def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metric):
   """
     Runs the coco evaluation for each ref list and prints to the output file.
   """
@@ -54,9 +54,9 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f):
   print(f, "Corruption:", corruption,file=sys.stderr)
   print(f, "#  References:     5   |    10   |    20",file=sys.stderr)
   print(f, "-----------------------+---------+---------",file=sys.stderr)
-  coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p),
-                 coco_accuracy(sent_a, sent_b, ref_10, corruption in m_p),
-                 coco_accuracy(sent_a, sent_b, ref_20, corruption in m_p)]
+  coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p,metric),
+                 coco_accuracy(sent_a, sent_b, ref_10, corruption in m_p,metric),
+                 coco_accuracy(sent_a, sent_b, ref_20, corruption in m_p,metric)]
   for metric in coco_results[0].keys():
     print(f, "   %10s: %0.1f | %0.1f | %0.1f" % (metric, 
                                                coco_results[0][metric] * 100, 
@@ -65,14 +65,14 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f):
   print(f, "-----------------------+---------+---------",file=sys.stderr)
   print(f, "",file=sys.stderr)
 
-def coco_accuracy(sent_a, sent_b, refs, near):
+def coco_accuracy(sent_a, sent_b, refs, near,metric):
   """
     For the coco-caption metric 
     to extract the accuracy of all the metrics that were run.
   """
   res   = {}
   total = 0.0
-  for a, b in zip(coco_eval(sent_a, refs), coco_eval(sent_b, refs)):
+  for a, b in zip(coco_eval(sent_a, refs,metric), coco_eval(sent_b, refs,metric)):
     for metric in a.keys():
       if metric is not "SPICE":
         #print(" {}[{}]={} ".format(a,metric,a[metric]))
@@ -98,7 +98,7 @@ def coco_accuracy(sent_a, sent_b, refs, near):
     res[metric] /= total
   return res
 
-def coco_eval(candidates_file, references_file):
+def coco_eval(candidates_file, references_file,metric):
   """
     Given the candidates and references, the coco-caption module is 
     used to calculate various metrics. Returns a list of dictionaries containing:
@@ -130,10 +130,10 @@ def coco_eval(candidates_file, references_file):
       l=[]
       result={}
       while(i<len(annotations) and annotations[i]['image_id']==corr['image_id']):
-        l.append(float(scorer.score([annotations[i]['caption']], [corr['caption']])[2]))
+        l.append(float(metric[1](annotations[i]['caption'],corr['caption'])))
         i+=1
       result['image_id']=corr['image_id']
-      result['BERTScore']=np.mean(l)
+      result[metric[0]]=np.mean(l)
       output.append(result)
         
     #cocoEval = COCOEvalCap(coco, cocoRes)
