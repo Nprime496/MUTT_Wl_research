@@ -2,7 +2,7 @@
 # MUTT
 [Metrics Unit TesTing (MUTT)](https://www.aclweb.org/anthology/P16-1182/) for machine translation and other similarity metrics.
 
-"To design better metrics, we need a principled approach to evaluating their performance. Historically, MT metrics have been evaluated by how well they correlate with human annotations (Callison-Burch et al., 2010; Machacek and Bojar, 2014). However, as we demonstrate in Sec. 5, human judgment can result in inconsistent scoring. This presents a serious problem for determining whether a metric is ”good” based on correlation with inconsistent human scores. When ”gold” target data is
+"To design better metrics, we need a principled approach to evaluating their performance. Historically, MT metrics have been evaluated by how well they correlate with human annotations ([Callison-Burch et al., 2010](https://www.aclweb.org/anthology/E06-1032/); [Machacek and Bojar, 2014](https://ufal.mff.cuni.cz/pbml/103/art-machacek-bojar.pdf). However, as we demonstrate in Sec. 5, human judgment can result in inconsistent scoring. This presents a serious problem for determining whether a metric is ”good” based on correlation with inconsistent human scores. When ”gold” target data is
 unreliable, even good metrics can appear to be inaccurate. Furthermore, correlation of system output with human-derived scores typically provides an overall
 score but fails to isolate specific errors that metrics tend to miss. This makes it difficult to discover system-specific weaknesses to improve their
 performance. For instance, an ngram-based metric might effectively detect non-fluent, syntactic errors, but could also be fooled by legitimate paraphrases whose ngrams simply did not appear in the training set.
