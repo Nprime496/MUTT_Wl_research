@@ -86,6 +86,7 @@ def evaluate_mutt(all_metrics):
     metrics.coco(*writer.files_json(corruption), corruption=corruption, f=coco_file,metrics=all_metrics)
     #metrics.badger(*writer.files_xml(corruption), corruption=corruption, f=badger_file)
     #metrics.terp(*writer.files_xml(corruption), corruption=corruption, f=terp_file)
+    #ekie
   #terp_file.close()
   #badger_file.close()
   coco_file.close()
