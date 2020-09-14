@@ -50,20 +50,21 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics):
     Runs the coco evaluation for each ref list and prints to the output file.
   """
 
-  print()
-  print(f, "Corruption:", corruption ,file=sys.stderr)
-  print(f, "#  References:     5   |    10   |    20",file=sys.stderr)
-  print(f, "-----------------------+---------+---------",file=sys.stderr)
+  print("\n\n\n\n")
+  print(f)
+  print("Corruption:", corruption ,file=sys.stderr)
+  print("#  References:     5   |    10   |    20",file=sys.stderr)
+  print( "-----------------------+---------+---------",file=sys.stderr)
   coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p,metrics),
                  coco_accuracy(sent_a, sent_b, ref_10, corruption in m_p,metrics),
                  coco_accuracy(sent_a, sent_b, ref_20, corruption in m_p,metrics)]
   for metric in coco_results[0].keys():
-    print(f, "   %10s: %0.1f | %0.1f | %0.1f" % (metric, 
+    print("   %10s: %0.1f | %0.1f | %0.1f" % (metric, 
                                                coco_results[0][metric] * 100, 
                                                coco_results[1][metric] * 100, 
                                                coco_results[2][metric] * 100),file=sys.stderr)
-  print(f, "-----------------------+---------+---------",file=sys.stderr)
-  print(f, "",file=sys.stderr)
+  print("-----------------------+---------+---------",file=sys.stderr)
+  print("",file=sys.stderr)
 
 def coco_accuracy(sent_a, sent_b, refs, near,metrics):
   """

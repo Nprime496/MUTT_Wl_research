@@ -266,14 +266,15 @@ def apply_corruption(entries, corruption, f_corr, description):
     stddev = variance ** 0.5
 
     with open(outname, 'w') as f:
-        print(f, corruption,file=sys.stderr)
-        print(f, description,file=sys.stderr)
-        print(f, '',file=sys.stderr)
+        print(f)
+        print(corruption,file=sys.stderr)
+        print(description,file=sys.stderr)
+        print('',file=sys.stderr)
 
-        print(f, 'num:    ', len(corrupted),file=sys.stderr)
-        print(f, 'mean:   ', mean,file=sys.stderr)
-        print(f, 'stddev: ', stddev,file=sys.stderr)
-        print(f, '\n',file=sys.stderr)
+        print('num:    ', len(corrupted),file=sys.stderr)
+        print('mean:   ', mean,file=sys.stderr)
+        print('stddev: ', stddev,file=sys.stderr)
+        print('\n',file=sys.stderr)
 
         ranked = sorted(corrupted, key=lambda e:e[-1])
         
