@@ -16,7 +16,8 @@ This version of MUTT tends to provide means to evaluate any metric on the same d
 ### Dependencies:
 - python (3.*)
 
-### Run
+
+### Run :
 To just evaluate metric, you have to clone the repo:
 
 `git clone https://github.com/Nprime496/MUTT_Wl_research.git`

@@ -11,6 +11,7 @@
 
 """
 import json
+import tqdm
 import os
 import sys
 import numpy as np
@@ -49,16 +50,20 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics):
   """
     Runs the coco evaluation for each ref list and prints to the output file.
   """
-
-  print("\n\n\n\n")
-  print(f)
+  print(f,file=sys.stderr)
   print("Corruption:", corruption ,file=sys.stderr)
-  print("#  References:     5   |    10   |    20",file=sys.stderr)
-  print( "-----------------------+---------+---------",file=sys.stderr)
-  coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p,metrics),
-                 coco_accuracy(sent_a, sent_b, ref_10, corruption in m_p,metrics),
-                 coco_accuracy(sent_a, sent_b, ref_20, corruption in m_p,metrics)]
-  for metric in coco_results[0].keys():
+  #coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p,metrics),
+  #               coco_accuracy(sent_a, sent_b, ref_10, corruption in m_p,metrics),
+  #               coco_accuracy(sent_a, sent_b, ref_20, corruption in m_p,metrics)]
+
+  all_ref=[ref_5,ref_10,ref_20]
+
+  for metric in metrics:
+    print("#  References:     5   |    10   |    20",file=sys.stderr)
+    print( "-----------------------+---------+---------",file=sys.stderr)
+    coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p,metric),
+                 coco_accuracy(sent_a, sent_b, ref_10, corruption in m_p,metric),
+                 coco_accuracy(sent_a, sent_b, ref_20, corruption in m_p,metric)]
     print("   %10s: %0.1f | %0.1f | %0.1f" % (metric, 
                                                coco_results[0][metric] * 100, 
                                                coco_results[1][metric] * 100, 
@@ -112,11 +117,6 @@ def coco_eval(candidates_file, references_file,metrics):
   old_stdout = sys.stdout
   sys.stdout = open(os.devnull, "w")
   try:
-    # Derived from example code in coco-captions repo
-    #print("REFERENCE_FILES_NPRIME",references_file,file=sys.stderr)
-    #print("CANDIDATE_FILES_NPRIME",candidates_file,file=sys.stderr)
-    #coco    = COCO( references_file )
-    #cocoRes = coco.loadRes( candidates_file )
     result={}
     with open(references_file, "r") as f:
       f=json.load(f)
@@ -126,25 +126,19 @@ def coco_eval(candidates_file, references_file,metrics):
       corruptions=corr
     i=0
     output=[]
-    for corr in corruptions:
+    for corr in tqdm.tqdm(corruptions):
       l=[]
       result={}
       result['image_id']=corr['image_id']
-      for metric in metrics:
-        while(i<len(annotations) and annotations[i]['image_id']==corr['image_id']):
-          l.append(float(metric[1](annotations[i]['caption'],corr['caption'])))
-          i+=1
-        result[metric[0]]=np.mean(l)
+      while(i<len(annotations) and annotations[i]['image_id']==corr['image_id']):
+        l.append(float(metric[1](annotations[i]['caption'],corr['caption'])))
+        i+=1
+      result[metric[0]]=np.mean(l)
       output.append(result)
-        
-    #cocoEval = COCOEvalCap(coco, cocoRes)
-    #cocoEval.evaluate()
   finally:
     # Change back to standard output
     sys.stdout.close()
     sys.stdout = old_stdout
-  #print("COCOL EVAL RESULT ",cocoEval.evalImgs,file=sys.stderr)
-  #print("BERTScore RESULT ",output)
   return output#cocoEval.evalImgs
 
 #
