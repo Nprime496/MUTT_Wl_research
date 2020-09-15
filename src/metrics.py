@@ -52,10 +52,6 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics):
   """
   print(f,file=sys.stderr)
   print("Corruption:", corruption ,file=sys.stderr)
-  #coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p,metrics),
-  #               coco_accuracy(sent_a, sent_b, ref_10, corruption in m_p,metrics),
-  #               coco_accuracy(sent_a, sent_b, ref_20, corruption in m_p,metrics)]
-
   all_ref=[ref_5,ref_10,ref_20]
 
   for metric in metrics:
