@@ -59,11 +59,11 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics):
   all_ref=[ref_5,ref_10,ref_20]
 
   for metric in metrics:
-    print("#  References:     5   |    10   |    20",file=sys.stderr)
-    print( "-----------------------+---------+---------",file=sys.stderr)
     coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p,metric),
                  coco_accuracy(sent_a, sent_b, ref_10, corruption in m_p,metric),
                  coco_accuracy(sent_a, sent_b, ref_20, corruption in m_p,metric)]
+    print("#  References:     5   |    10   |    20")
+    print( "-----------------------+---------+---------")
     print("   %10s: %0.1f | %0.1f | %0.1f" % (metric, 
                                                coco_results[0][metric] * 100, 
                                                coco_results[1][metric] * 100, 
@@ -71,14 +71,14 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics):
   print("-----------------------+---------+---------",file=sys.stderr)
   print("",file=sys.stderr)
 
-def coco_accuracy(sent_a, sent_b, refs, near,metrics):
+def coco_accuracy(sent_a, sent_b, refs, near,metric_):
   """
     For the coco-caption metric 
     to extract the accuracy of all the metrics that were run.
   """
   res   = {}
   total = 0.0
-  for a, b in zip(coco_eval(sent_a, refs,metrics), coco_eval(sent_b, refs,metrics)):
+  for a, b in zip(coco_eval(sent_a, refs,metric_), coco_eval(sent_b, refs,metric_)):
     for metric in a.keys():
       #print(" {}[{}]={} ".format(a,metric,a[metric]))
       #print(" {}[{}]={} ".format(b,metric,b[metric]))
@@ -103,7 +103,7 @@ def coco_accuracy(sent_a, sent_b, refs, near,metrics):
     res[metric] /= total
   return res
 
-def coco_eval(candidates_file, references_file,metrics):
+def coco_eval(candidates_file, references_file,metric):
   """
     Given the candidates and references, the coco-caption module is 
     used to calculate various metrics. Returns a list of dictionaries containing:
