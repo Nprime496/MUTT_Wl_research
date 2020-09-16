@@ -46,7 +46,7 @@ from pycocoevalcap.eval import COCOEvalCap
 # The set of meaning preserving corruptions
 m_p = set(['det_sub', 'near_syms', 'passive'])
 
-def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics):
+def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics,showoff=False):
   """
     Runs the coco evaluation for each ref list and prints to the output file.
   """
@@ -55,26 +55,28 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics):
   all_ref=[ref_5,ref_10,ref_20]
 
   for metric in metrics:
-    coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p,metric),
-                 coco_accuracy(sent_a, sent_b, ref_10, corruption in m_p,metric),
-                 coco_accuracy(sent_a, sent_b, ref_20, corruption in m_p,metric)]
-    print("#  References:     5   |    10   |    20")
+    coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p,metric,showoff),
+                 coco_accuracy(sent_a, sent_b, ref_10, corruption in m_p,metric,showoff),
+                 coco_accuracy(sent_a, sent_b, ref_20, corruption in m_p,metric,showoff)]
+    if showoff==True:
+      continue
+    print("\n#  References:     5   |    10   |    20")
     print( "-----------------------+---------+---------")
-    print("   %10s: %0.1f | %0.1f | %0.1f" % (metric, 
+    print("   %10s: %0.1f | %0.1f | %0.1f" % (metric[0], 
                                                coco_results[0][metric[0]] * 100, 
                                                coco_results[1][metric[0]] * 100, 
-                                               coco_results[2][metric[0]] * 100),file=sys.stderr)
-  print("-----------------------+---------+---------",file=sys.stderr)
-  print("",file=sys.stderr)
+                                               coco_results[2][metric[0]] * 100))
+    print("-----------------------+---------+---------")
+    print("")
 
-def coco_accuracy(sent_a, sent_b, refs, near,metric_):
+def coco_accuracy(sent_a, sent_b, refs, near,metric_,showoff):
   """
     For the coco-caption metric 
     to extract the accuracy of all the metrics that were run.
   """
   res   = {}
   total = 0.0
-  for a, b in zip(coco_eval(sent_a, refs,metric_), coco_eval(sent_b, refs,metric_)):
+  for a, b in zip(coco_eval(sent_a, refs,metric_,showoff), coco_eval(sent_b, refs,metric_,showoff)):
     for metric in a.keys():
       #print(" {}[{}]={} ".format(a,metric,a[metric]))
       #print(" {}[{}]={} ".format(b,metric,b[metric]))
@@ -99,7 +101,30 @@ def coco_accuracy(sent_a, sent_b, refs, near,metric_):
     res[metric] /= total
   return res
 
-def coco_eval(candidates_file, references_file,metric):
+def load_data_eval(candidates_file):
+    with open(candidates_file, "r") as f:
+      f=json.load(f)
+      annotations=f["annotations"]
+    return annotations
+
+
+def micro_eval(candidates_file, references_file,metric,showoff=False,num=5):
+
+  annotations,corruptions=load_data_eval(candidates_file),load_data_eval(references_file)
+  annotations,corruptions=annotations[:num],corruptions[:num]
+  for corr in corruptions:
+    l=[]
+    result={}
+    result['image_id']=corr['image_id']
+    while(i<len(annotations) and annotations[i]['image_id']==corr['image_id']):
+      r=float(metric[1](annotations[i]['caption'],corr['caption']))
+      l.append(r)
+      print(" %50s | %50s | %0.1f" % (annotations[i]['caption'],corr['caption'],r))
+      i+=1
+    result[metric[0]]=np.mean(l)
+    output.append(result)
+
+def coco_eval(candidates_file, references_file,metric,showoff=False,num=5):
   """
     Given the candidates and references, the coco-caption module is 
     used to calculate various metrics. Returns a list of dictionaries containing:
@@ -112,21 +137,19 @@ def coco_eval(candidates_file, references_file,metric):
   # This is used to suppress the output of coco-eval:
   old_stdout = sys.stdout
   sys.stdout = open(os.devnull, "w")
+  if showoff==True:
+    return micro_eval(candidates_file, references_file,metric,num)
+
   try:
     result={}
-    with open(references_file, "r") as f:
-      f=json.load(f)
-      annotations=f["annotations"]
-    with open(candidates_file, "r") as corr:
-      corr=json.load(corr)
-      corruptions=corr
+    annotations,corruptions=load_data_eval(candidates_file),load_data_eval(references_file)
     i=0
     output=[]
     for corr in tqdm.tqdm(corruptions):
       l=[]
       result={}
       result['image_id']=corr['image_id']
-      while(i<len(annotations) and annotations[i]['image_id']==corr['image_id']):
+      while(i<len(annotations) and annotations[i]['image_id']==corr['image_id']): 
         l.append(float(metric[1](annotations[i]['caption'],corr['caption'])))
         i+=1
       result[metric[0]]=np.mean(l)
