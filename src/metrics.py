@@ -61,9 +61,9 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics):
     print("#  References:     5   |    10   |    20")
     print( "-----------------------+---------+---------")
     print("   %10s: %0.1f | %0.1f | %0.1f" % (metric, 
-                                               coco_results[0][metric] * 100, 
-                                               coco_results[1][metric] * 100, 
-                                               coco_results[2][metric] * 100),file=sys.stderr)
+                                               coco_results[0][metric[0]] * 100, 
+                                               coco_results[1][metric[0]] * 100, 
+                                               coco_results[2][metric[0]] * 100),file=sys.stderr)
   print("-----------------------+---------+---------",file=sys.stderr)
   print("",file=sys.stderr)
 
