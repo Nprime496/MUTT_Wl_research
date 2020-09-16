@@ -83,7 +83,7 @@ def evaluate_mutt(all_metrics,showoff=False):
   badger_file = open(os.path.join(RES_DIR, 'badger.txt'), 'w')
   terp_file = open(os.path.join(RES_DIR, 'terp.txt'), 'w')
   for corruption in (list(corruptions.keys()) + list(g_c.corruptions.keys())):
-    metrics.coco(*writer.files_json(corruption), corruption=corruption, f=coco_file,metrics=all_metrics,showoff)
+    metrics.coco(*writer.files_json(corruption), corruption=corruption, f=coco_file,metrics=all_metrics,showoff=showoff)
     #metrics.badger(*writer.files_xml(corruption), corruption=corruption, f=badger_file)
     #metrics.terp(*writer.files_xml(corruption), corruption=corruption, f=terp_file)
     #ekie mince
