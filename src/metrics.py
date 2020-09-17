@@ -129,10 +129,11 @@ def micro_eval(candidates_file, references_file,metric,showoff=False,num=5):
     while(i<len(annotations) and annotations[i]['image_id']==corr['image_id']):
       r=float(metric[1](annotations[i]['caption'],corr['caption']))
       l.append(r)
-      print(" %50s | %50s | %0.1f" % (annotations[i]['caption'],corr['caption'],r))
+      print(" %50s | %50s | %0.1f" % (annotations[i]['caption'],corr['caption'],r),file=sys.stderr)
       i+=1
     result[metric[0]]=np.mean(l)
     output.append(result)
+  return output
 
 def coco_eval(candidates_file, references_file,metric,showoff=False,num=5):
   """
