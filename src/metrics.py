@@ -107,12 +107,18 @@ def load_mdata_eval(candidates_file):
       annotations=f["annotations"]
     return annotations
 
+def load_mdata_eval(candidates_file):
+    with open(candidates_file, "r") as f:
+      f=json.load(f)
+      annotations=f
+    return annotations
+
 
 def micro_eval(candidates_file, references_file,metric,showoff=False,num=5):
 
   annotations,corruptions=load_mdata_eval(candidates_file),load_mdata_eval(references_file)
   annotations,corruptions=annotations[:num],corruptions[:num]
-  
+
   for corr in corruptions:
     l=[]
     result={}
