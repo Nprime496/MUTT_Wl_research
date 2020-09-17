@@ -139,7 +139,7 @@ def micro_eval(candidates_file, references_file,metric,showoff,num):
     output.append(result)
   return output
 
-def coco_eval(candidates_file, references_file,metric,showoff=False,num):
+def coco_eval(candidates_file, references_file,metric,showoff,num):
   """
     Given the candidates and references, the coco-caption module is 
     used to calculate various metrics. Returns a list of dictionaries containing:
