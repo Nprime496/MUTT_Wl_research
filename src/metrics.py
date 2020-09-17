@@ -51,7 +51,7 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics,showoff):
     Runs the coco evaluation for each ref list and prints to the output file.
   """
   print(f,file=sys.stderr)
-  print("Corruption:", corruption ,file=sys.stderr)
+  print("Corruption:", corruption.upper() ,file=sys.stderr)
   all_ref=[ref_5,ref_10,ref_20]
 
   for metric in metrics:
@@ -102,14 +102,14 @@ def coco_accuracy(sent_a, sent_b, refs, near,metric_,showoff):
   return res
 
 def load_mdata_eval(candidates_file):
-  print("mdata :: ",candidates_file,file=sys.stderr)
+  #print("mdata :: ",candidates_file,file=sys.stderr)
   with open(candidates_file, "r") as f:
     f=json.load(f)
     annotations=f["annotations"]
   return annotations
 
 def load_rdata_eval(candidates_file):
-  print("rdata :: ",candidates_file,file=sys.stderr)
+  #print("rdata :: ",candidates_file,file=sys.stderr)
   with open(candidates_file, "r") as f:
     f=json.load(f)
     annotations=f
