@@ -56,11 +56,12 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics,showoff,nu
   all_ref=[ref_5,ref_10,ref_20]
 
   for metric in metrics:
-    coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p,metric,showoff,num),
-                 coco_accuracy(sent_a, sent_b, ref_10, corruption in m_p,metric,showoff,num),
-                 coco_accuracy(sent_a, sent_b, ref_20, corruption in m_p,metric,showoff,num)]
     if showoff==True:
+      coco_results= [coco_accuracy(sent_a, sent_b, ref_20, corruption in m_p,metric,showoff,num)]
       continue
+    coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p,metric,showoff,num),
+              coco_accuracy(sent_a, sent_b, ref_10, corruption in m_p,metric,showoff,num),
+              coco_accuracy(sent_a, sent_b, ref_20, corruption in m_p,metric,showoff,num)]
     print("\n#  References:     5   |    10   |    20")
     print( "-----------------------+---------+---------")
     print("   %10s: %0.1f | %0.1f | %0.1f" % (metric[0], 
