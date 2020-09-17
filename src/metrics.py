@@ -102,14 +102,14 @@ def coco_accuracy(sent_a, sent_b, refs, near,metric_,showoff):
   return res
 
 def load_mdata_eval(candidates_file):
-  print("mdata :: ",candidates_file)
+  print("mdata :: ",candidates_file,file=sys.stderr)
   with open(candidates_file, "r") as f:
     f=json.load(f)
     annotations=f["annotations"]
   return annotations
 
 def load_rdata_eval(candidates_file):
-  print("rdata :: ",candidates_file)
+  print("rdata :: ",candidates_file,file=sys.stderr)
   with open(candidates_file, "r") as f:
     f=json.load(f)
     annotations=f
