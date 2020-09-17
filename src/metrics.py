@@ -46,7 +46,7 @@ from pycocoevalcap.eval import COCOEvalCap
 # The set of meaning preserving corruptions
 m_p = set(['det_sub', 'near_syms', 'passive'])
 
-def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics,showoff=False):
+def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics,showoff):
   """
     Runs the coco evaluation for each ref list and prints to the output file.
   """
@@ -101,7 +101,7 @@ def coco_accuracy(sent_a, sent_b, refs, near,metric_,showoff):
     res[metric] /= total
   return res
 
-def load_data_eval(candidates_file):
+def load_mdata_eval(candidates_file):
     with open(candidates_file, "r") as f:
       f=json.load(f)
       annotations=f["annotations"]
@@ -110,8 +110,9 @@ def load_data_eval(candidates_file):
 
 def micro_eval(candidates_file, references_file,metric,showoff=False,num=5):
 
-  annotations,corruptions=load_data_eval(candidates_file),load_data_eval(references_file)
+  annotations,corruptions=load_mdata_eval(candidates_file),load_mdata_eval(references_file)
   annotations,corruptions=annotations[:num],corruptions[:num]
+  
   for corr in corruptions:
     l=[]
     result={}
