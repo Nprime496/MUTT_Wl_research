@@ -119,7 +119,7 @@ def load_rdata_eval(candidates_file):
 def micro_eval(candidates_file, references_file,metric,showoff=False,num=5):
 
   annotations,corruptions=load_mdata_eval(references_file),load_rdata_eval(candidates_file)
-  annotations,corruptions=annotations[:num],corruptions[:num]
+  annotations,corruptions=annotations,corruptions[:num]
   i=0
   output=[]
   for corr in corruptions:
@@ -129,7 +129,7 @@ def micro_eval(candidates_file, references_file,metric,showoff=False,num=5):
     while(i<len(annotations) and annotations[i]['image_id']==corr['image_id']):
       r=float(metric[1](annotations[i]['caption'],corr['caption']))
       l.append(r)
-      print(" %50s | %50s | %0.1f" % (annotations[i]['caption'],corr['caption'],r),file=sys.stderr)
+      print(" %100s | %100s | %0.1f" % (annotations[i]['caption'],corr['caption'],r),file=sys.stderr)
       i+=1
     result[metric[0]]=np.mean(l)
     output.append(result)
