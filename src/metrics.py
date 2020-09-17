@@ -105,7 +105,7 @@ def load_mdata_eval(candidates_file):
   print("mdata :: ",candidates_file,file=sys.stderr)
   with open(candidates_file, "r") as f:
     f=json.load(f)
-    annotations=f#["annotations"]
+    annotations=f["annotations"]
   return annotations
 
 def load_rdata_eval(candidates_file):
