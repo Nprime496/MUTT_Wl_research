@@ -121,6 +121,7 @@ def micro_eval(candidates_file, references_file,metric,showoff=False,num=5):
   annotations,corruptions=load_mdata_eval(references_file),load_rdata_eval(candidates_file)
   annotations,corruptions=annotations[:num],corruptions[:num]
   i=0
+  output=[]
   for corr in corruptions:
     l=[]
     result={}
