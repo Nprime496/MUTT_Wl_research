@@ -58,8 +58,9 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics,showoff,nu
   for metric in metrics:
     if showoff==True:
       coco_results= [coco_accuracy(sent_a, sent_b, ref_20, corruption in m_p,metric,showoff,num)]
+      print("finished")
       continue
-    
+
     coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p,metric,showoff,num),
               coco_accuracy(sent_a, sent_b, ref_10, corruption in m_p,metric,showoff,num),
               coco_accuracy(sent_a, sent_b, ref_20, corruption in m_p,metric,showoff,num)]
