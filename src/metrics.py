@@ -137,7 +137,7 @@ def micro_eval(candidates_file, references_file,metric,num):
       if(j<1):
         r=float(metric[1](annotations[i]['caption'],corr['caption']))
         l.append(r)
-        print(" %100s | %100s | %0.1f" % (annotations[i]['caption'],corr['caption'],r),file=sys.stderr)
+        print(" %60s | %60s | %0.2f" % (annotations[i]['caption'],corr['caption'],r),file=sys.stderr)
       i+=1
       j+=1
     result[metric[0]]=np.mean(l)
