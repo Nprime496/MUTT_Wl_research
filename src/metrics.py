@@ -117,7 +117,7 @@ def load_rdata_eval(candidates_file):
   with open(candidates_file, "r") as f:
     f=json.load(f)
     annotations=f
-  print(f,file=sys.stderr)
+  #print(f,file=sys.stderr)
   return annotations
 
 
@@ -153,8 +153,8 @@ def coco_eval(candidates_file, references_file,metric,showoff,num):
     -METEOR
     -CIDEr
   """
-  print("candidates ",candidates_file,file=sys.stderr)
-  print("references ",references_file,file=sys.stderr)
+  #print("candidates ",candidates_file,file=sys.stderr)
+  #print("references ",references_file,file=sys.stderr)
 
   # This is used to suppress the output of coco-eval:
   old_stdout = sys.stdout
