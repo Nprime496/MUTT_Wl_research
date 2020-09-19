@@ -117,7 +117,7 @@ def load_rdata_eval(candidates_file):
   with open(candidates_file, "r") as f:
     f=json.load(f)
     annotations=f
-  print(f)
+  print(f,file=sys.stderr)
   return annotations
 
 
