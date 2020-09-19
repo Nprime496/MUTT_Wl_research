@@ -163,7 +163,7 @@ def coco_eval(candidates_file, references_file,metric,showoff,num):
 
   try:
     result={}
-    annotations,corruptions=load_data_eval(candidates_file),load_data_eval(references_file)
+    corruptions,annotations=load_data_eval(candidates_file),load_data_eval(references_file)["annotations"]
     i=0
     output=[]
     for corr in tqdm.tqdm(corruptions):
