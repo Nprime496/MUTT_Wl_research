@@ -123,7 +123,7 @@ def load_rdata_eval(candidates_file):
 
 def micro_eval(candidates_file, references_file,metric,num):
 
-  annotations,corruptions=load_mdata_eval(references_file)["annotations"],load_rdata_eval(candidates_file)
+  annotations,corruptions=load_mdata_eval(references_file),load_rdata_eval(candidates_file)
   #random.shuffle(corruptions)
   annotations,corruptions=annotations,corruptions[:num]
   i=0
@@ -164,7 +164,7 @@ def coco_eval(candidates_file, references_file,metric,showoff,num):
 
   try:
     result={}
-    corruptions,annotations=load_data_eval(candidates_file),load_data_eval(references_file)["annotations"]
+    corruptions,annotations=load_rdata_eval(candidates_file),load_mdata_eval(references_file)
     i=0
     output=[]
     for corr in tqdm.tqdm(corruptions):
