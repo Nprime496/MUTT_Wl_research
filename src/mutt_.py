@@ -18,7 +18,7 @@ from gather_references import gather_references
 
 import metrics
 import writer
-
+import pandas as pd
 import generate_corruptions as g_c
 
 TMP_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tmp')
