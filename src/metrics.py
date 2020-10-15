@@ -47,7 +47,7 @@ from pycocoevalcap.eval import COCOEvalCap
 # The set of meaning preserving corruptions
 m_p = set(['det_sub', 'near_syms', 'passive'])
 
-def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics,showoff,num):
+def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics,showoff,num,quaed):
   """
     Runs the coco evaluation for each ref list and prints to the output file.
   """
@@ -61,17 +61,25 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics,showoff,nu
       print("finished")
       continue
 
-    coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p,metric,showoff,num),
+    if quaed==True:
+      coco_results= [coco_accuracy_qaed(sent_a, sent_b, ref_5, corruption in m_p,metric,showoff,num)]
+      print("\n#  References:     5   |")
+      print( "--------------+----------")
+      print("   %10s:  %0.1f |" % (metric[0], coco_results[0][metric[0]] * 100 ))
+      print("-----------------------+---------+---------")
+      print("")
+    else:
+      coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p,metric,showoff,num),
               coco_accuracy(sent_a, sent_b, ref_10, corruption in m_p,metric,showoff,num),
               coco_accuracy(sent_a, sent_b, ref_20, corruption in m_p,metric,showoff,num)]
-    print("\n#  References:     5   |    10   |    20")
-    print( "-----------------------+---------+---------")
-    print("   %10s: %0.1f | %0.1f | %0.1f" % (metric[0], 
-                                               coco_results[0][metric[0]] * 100, 
-                                               coco_results[1][metric[0]] * 100, 
-                                               coco_results[2][metric[0]] * 100))
-    print("-----------------------+---------+---------")
-    print("")
+      print("\n#  References:     5   |    10   |    20")
+      print( "-----------------------+---------+---------")
+      print("   %10s: %0.1f | %0.1f | %0.1f" % (metric[0], 
+                                                 coco_results[0][metric[0]] * 100, 
+                                                 coco_results[1][metric[0]] * 100, 
+                                                 coco_results[2][metric[0]] * 100))
+      print("-----------------------+---------+---------")
+      print("")
 
 def coco_accuracy(sent_a, sent_b, refs, near,metric_,showoff,num):
   """
@@ -104,6 +112,39 @@ def coco_accuracy(sent_a, sent_b, refs, near,metric_,showoff,num):
   for metric in res.keys():
     res[metric] /= total
   return res
+
+def coco_accuracy_qaed(sent_a, sent_b, refs, near,metric_,showoff,num):
+  """
+    For the coco-caption metric 
+    to extract the accuracy of all the metrics that were run.
+  """
+  res   = {}
+  total = 0.0
+  for a, b in zip(coco_eval_qaed(sent_a, refs,metric_,showoff,num), coco_eval_qaed(sent_b, refs,metric_,showoff,num)):
+    for metric in a.keys():
+      #print(" {}[{}]={} ".format(a,metric,a[metric]))
+      #print(" {}[{}]={} ".format(b,metric,b[metric]))
+      # Special case of meaning preserving corruptions j
+      if near:
+        # Adding .1 to everything to avoid divide by zero error
+        per_diff = abs((a[metric] - b[metric]) / float(a[metric] + 1e-9)) * 100
+        # 15 % threshold
+        if per_diff <= 15:
+          try:
+            res[metric] += 1
+          except:
+            res[metric]  = 1
+      elif a[metric] > b[metric]:
+        try:
+          res[metric] += 1
+        except:
+          res[metric]  = 1
+    total += 1
+
+  for metric in res.keys():
+    res[metric] /= total
+  return res
+
 
 def load_mdata_eval(candidates_file):
   #print("mdata :: ",candidates_file,file=sys.stderr)
@@ -175,6 +216,44 @@ def coco_eval(candidates_file, references_file,metric,showoff,num):
         l.append(float(metric[1](annotations[i]['caption'],corr['caption'])))
         i+=1
       result[metric[0]]=np.mean(l)
+      output.append(result)
+  finally:
+    # Change back to standard output
+    sys.stdout.close()
+    sys.stdout = old_stdout
+  return output#cocoEval.evalImgs
+
+
+def coco_eval_qaed(candidates_file, references_file,metric,showoff,num):
+  """
+    Given the candidates and references, the coco-caption module is 
+    used to calculate various metrics. Returns a list of dictionaries containing:
+    -BLEU
+    -ROUGE
+    -METEOR
+    -CIDEr
+  """
+  #print("candidates ",candidates_file,file=sys.stderr)
+  #print("references ",references_file,file=sys.stderr)
+
+  # This is used to suppress the output of coco-eval:
+  old_stdout = sys.stdout
+
+  sys.stdout = open(os.devnull, "w")
+  if showoff==True:
+    return micro_eval(candidates_file, references_file,metric,num)
+
+  try:
+    result={}
+    data=pd.read_excel(candidates_file.split(".")[0]+".xlsx")
+    #corruptions,annotations=load_rdata_eval(candidates_file),load_mdata_eval(references_file)
+    i=0
+    output=[]
+    for index,row in tqdm.tqdm(data.iterrows()):
+      result={}
+      print(row['original']," | ",row['corruption'],file=sys.stderr)
+      l=float(metric[1](row['original'],row['corruption']))
+      result[metric[0]]=l
       output.append(result)
   finally:
     # Change back to standard output

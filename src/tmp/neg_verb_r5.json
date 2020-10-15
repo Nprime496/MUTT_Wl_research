@@ -1,4 +1,5 @@
-{"type":"captions", "info":{}, "licenses":[], "type":"captions", "annotations":[{"image_id": 0, "id": 0, "caption": "A dog barks at a walking electronic chicken."},
+{"type":"captions", "info":{}, "licenses":[], "type":"captions", "annotations":
+[{"image_id": 0, "id": 0, "caption": "A dog barks at a walking electronic chicken."},
 {"image_id": 0, "id": 0, "caption": "A dog is barking at a mechanical chicken."},
 {"image_id": 0, "id": 0, "caption": "A dog is barking at a musical toy."},
 {"image_id": 0, "id": 0, "caption": "A dog is barking at a toy duck."},
