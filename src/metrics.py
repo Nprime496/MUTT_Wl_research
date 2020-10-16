@@ -246,16 +246,19 @@ def coco_eval_qaed(candidates_file, references_file,metric,showoff,num):
 
   try:
     result={}
-    data=pd.read_excel(candidates_file.split(".")[0]+".xlsx")
+    file=candidates_file.split(".")[0]+".xlsx"
+    data=pd.read_excel(file)
     #corruptions,annotations=load_rdata_eval(candidates_file),load_mdata_eval(references_file)
     i=0
     output=[]
     for index,row in tqdm.tqdm(data.iterrows()):
       result={}
-      print(row['original']," | ",row['corruption'],file=sys.stderr)
+      #print(row['original']," | ",row['corruption'],file=sys.stderr)
       l=float(metric[1](row['original'],row['corruption']))
       result[metric[0]]=l
       output.append(result)
+  except OSError:
+    print(file,"is not found",file=sys.stderr)
   finally:
     # Change back to standard output
     sys.stdout.close()
