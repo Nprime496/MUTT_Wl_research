@@ -19,9 +19,11 @@ This version of MUTT tends to provide means to evaluate any metric on the same d
 
 ### Run :
 To just evaluate metric, you have to clone the repo:
+```
+git clone https://github.com/Nprime496/MUTT_Wl_research.git`
+cd MUTT_Wl_research/src
+```
 
-`git clone https://github.com/Nprime496/MUTT_Wl_research.git`
-`cd MUTT_Wl_research/src`
 The available corruptions are divised in two categories:
 opposite meaning corruptions
 ```
