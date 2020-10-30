@@ -22,7 +22,23 @@ To just evaluate metric, you have to clone the repo:
 
 `git clone https://github.com/Nprime496/MUTT_Wl_research.git`
 `cd MUTT_Wl_research/src`
-
+The available corruptions are divised in two categories:
+opposite meaning corruptions
+```
+det_sub : the corruption of reference has a determinant substitution
+shuffled: the corruption of reference words are shuffled
+neg_sub: the corruption of reference has opposite subjects
+neg_verb: the corruption of reference has opposite verbs
+sem_opps: 
+remove_prep:
+double_pp:
+swap_chunks:
+```
+similar meaning corruptions
+```
+passive:
+near_syms:
+```
 You have to define your function which will be used to compare two sentences.
 For example, for BERTScore
 ```
@@ -39,10 +55,15 @@ Then, you run the API using `evaluate_mutt`
 from mutt_ import evaluate_mutt
 evaluate_mutt([("<name of your model>",<function taking two sentences as input and returning a float value of the score>),...])
 ```
-For our example (with BERTScore) , it will be
+For our example (with BERTScore) , to evaluate it against original MUTT paper...
 
 ```
 from mutt_ import evaluate_mutt
 evaluate_mutt([("BERTScore",evaluate_BERTScore_two_sentences)])
 ```
+to evaluate it against reviewed MUTT dataset (qaed)
 
+```
+from mutt_ import evaluate_mutt
+evaluate_mutt([("BERTScore",evaluate_BERTScore_two_sentences)],qaed=True)
+```
