@@ -259,7 +259,7 @@ def coco_eval_qaed(candidates_file, references_file,metric,showoff,num):
       output.append(result)
   except OSError:
     print(file,"IS NOT FOUND",file=sys.stderr)
-    return []
+    return [{metric[0]:0.0}]#no value because no file!!!!
   finally:
     # Change back to standard output
     sys.stdout.close()
