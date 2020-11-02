@@ -52,6 +52,7 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics,showoff,nu
   """
     Runs the coco evaluation for each ref list and prints to the output file.
   """
+
   print(f,file=sys.stderr)
   print("Corruption:", corruption.upper() ,file=sys.stderr)
   all_ref=[ref_5,ref_10,ref_20]
@@ -63,12 +64,15 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics,showoff,nu
       continue
 
     if quaed==True:
-      coco_results= [coco_accuracy_qaed(sent_a, sent_b, ref_5, corruption in m_p,metric,showoff,num)]
-      print("\n#  References:     5   |")
-      print( "--------------+----------")
-      print("   %10s:  %0.1f |" % (metric[0], coco_results[0][metric[0]] * 100 ))
-      print("-----------------------+---------+---------")
-      print("")
+      try:
+        coco_results= [coco_accuracy_qaed(sent_a, sent_b, ref_5, corruption in m_p,metric,showoff,num)]
+        print("\n#  References:     5   |")
+        print( "--------------+----------")
+        print("   %10s:  %0.1f |" % (metric[0], coco_results[0][metric[0]] * 100 ))
+        print("-----------------------+---------+---------")
+        print("")
+      except Exception as e:
+        print("no result available for ",metric[0]," because of exception ",e.args[1])
     else:
       coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p,metric,showoff,num),
               coco_accuracy(sent_a, sent_b, ref_10, corruption in m_p,metric,showoff,num),
