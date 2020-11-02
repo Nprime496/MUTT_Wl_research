@@ -72,7 +72,8 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics,showoff,nu
         print("-----------------------+---------+---------")
         print("")
       except Exception as e:
-        print("no result available for ",metric[0]," because of exception ")
+        print(e)
+        #print("no result available for ",metric[0]," because of exception ")
     else:
       coco_results= [coco_accuracy(sent_a, sent_b, ref_5, corruption in m_p,metric,showoff,num),
               coco_accuracy(sent_a, sent_b, ref_10, corruption in m_p,metric,showoff,num),
