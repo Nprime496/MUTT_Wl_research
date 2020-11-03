@@ -66,10 +66,10 @@ def coco(sent_a, sent_b, ref_5, ref_10, ref_20, corruption, f,metrics,showoff,nu
     if quaed==True:
       try:
         coco_results= [coco_accuracy_qaed(sent_a, sent_b, ref_5, corruption in m_p,metric,showoff,num)]
-        print("\n#  References:     5   |")
-        print( "--------------+----------")
+        print("\n#  References %10s:     5   |"%(metric[0]))
+        print( "------------------------+--------+")
         print("   %10s:  %0.1f |" % (metric[0], coco_results[0][metric[0]] * 100 ))
-        print("-----------------------+---------+---------")
+        print("-----------------------------+")
         print("")
       except Exception as e:
         print(e)
